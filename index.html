@@ -208,19 +208,14 @@
     conversationHistory.push({ role: 'user', content: text });
     addTyping();
     try {
-      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+     const res = await fetch('/api/chat', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${GROQ_KEY}`
-        },
-        body: JSON.stringify({
-          model: 'llama3-8b-8192',
-          messages: [
-            { role: 'system', content: 'أنت Malik، مساعد ذكاء اصطناعي عربي متطور وأنيق. ردودك باللغة العربية دائماً، موجزة وذكية ومفيدة.' },
-            ...conversationHistory
-          ]
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [
+          { role: 'system', content: 'أنت Malik، مساعد ذكاء اصطناعي عربي.' },
+          ...conversationHistory
+        ]})
+
       });
       const data = await res.json();
       const reply = data.choices?.[0]?.message?.content || 'عذراً، حدث خطأ.';
